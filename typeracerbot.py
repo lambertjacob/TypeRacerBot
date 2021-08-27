@@ -4,7 +4,8 @@ import random
 import time
 
 
-def play():
+def loadSite():
+    
     #define url
     url = "https://play.typeracer.com"
 
@@ -13,6 +14,43 @@ def play():
     web.get(url)
 
     time.sleep(2)
+    
+    #login 
+    login(web)
+
+    #return the web value to be used in main function
+    return web
+
+
+def login(web):
+    
+    username = "jacobot"
+    password = "Techandcoding2021"
+
+    #have the bot sign in to the fields on the website 
+    signinPage = web.find_element_by_xpath("//*[@id=\"userInfo\"]/div/div[2]/div[1]/div[2]/a[2]")
+    signinPage.click()
+
+    time.sleep(1)
+
+    usernameInput = web.find_element_by_xpath("/html/body/div[5]/div/div/div[3]/div/div[1]/div/table[1]/tbody/tr[2]/td/div/table/tbody/tr[1]/td[2]/input")
+    usernameInput.send_keys(username)
+
+    time.sleep(.5)
+
+    passwordInput = web.find_element_by_xpath("/html/body/div[5]/div/div/div[3]/div/div[1]/div/table[1]/tbody/tr[2]/td/div/table/tbody/tr[2]/td[2]/table/tbody/tr[1]/td/input")
+    passwordInput.send_keys(password)
+
+    signinButton = web.find_element_by_xpath("/html/body/div[5]/div/div/div[3]/div/div[1]/div/table[1]/tbody/tr[2]/td/div/table/tbody/tr[4]/td[2]/table/tbody/tr/td[1]/button")
+    signinButton.click()
+
+    time.sleep(.5)
+
+
+
+def online():
+    
+    web = loadSite()
 
     #click button "enter typing race"
     play = web.find_element_by_xpath('//*[@id="gwt-uid-1"]/a')
@@ -22,7 +60,7 @@ def play():
     speed = float(input("Enter the time between each word (roughly):\n"))
 
     #finds the chunk of text
-    text = web.find_element_by_xpath("//*[@id=\"gwt-uid-20\"]/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr[1]/td/div/div")
+    text = web.find_element_by_xpath("//*[@id=\"gwt-uid-21\"]/table/tbody/tr[2]/td/table/tbody/tr[1]/td/table/tbody/tr[1]/td/div/div")
     #divided into spans so need to get each one
     parts = text.find_elements_by_tag_name('span')
     
@@ -39,7 +77,7 @@ def play():
     words = wordsAll.split(" ")
 
     print(words)  
-    time.sleep(3)      
+    #time.sleep(3)      
     
     #iterate through each word
     for word in words:
@@ -72,7 +110,7 @@ def play():
 def main():
     #get the url and then start the game
     gamemode = input("How would you like to play?\n Online [1]\n")
-    if gamemode == "1": play()
+    if gamemode == "1": online()
 
 
 if __name__ == "__main__":
